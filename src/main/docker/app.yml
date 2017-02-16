@@ -1,0 +1,22 @@
+version: '2'
+services:
+    asocms-app:
+        image: asocms
+        external_links:
+            - asocms-mysql:mysql
+            - asocms-elasticsearch:elasticsearch
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/asocms?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
+        ports:
+            - 8080:8080
+    asocms-mysql:
+        extends:
+            file: mysql.yml
+            service: asocms-mysql
+    asocms-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: asocms-elasticsearch
